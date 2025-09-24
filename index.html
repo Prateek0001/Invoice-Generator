@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator - Deepa Weighing Services</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Invoice Generator</h1>
+
+        <div class="form-section">
+            <h2>Invoice Details</h2>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="invoiceNo">Invoice No:</label>
+                    <input type="text" id="invoiceNo" placeholder="A000">
+                </div>
+
+                <div class="form-group">
+                    <label for="invoiceDate">Date:</label>
+                    <input type="date" id="invoiceDate">
+                </div>
+
+                <div class="form-group">
+                    <label for="purchaseOrderNo">Purchase Order No:</label>
+                    <input type="text" id="purchaseOrderNo" placeholder="XXXX XXXX">
+                </div>
+
+                <div class="form-group">
+                    <label for="purchaseOrderDate">Purchase Order Date:</label>
+                    <input type="date" id="purchaseOrderDate">
+                </div>
+
+                <div class="form-group">
+                    <label for="vehicleNo">Vehicle No:</label>
+                    <input type="text" id="vehicleNo" placeholder="KL-07-CG-4411">
+                </div>
+
+                <div class="form-group">
+                    <label for="deliveryNoteNo">Delivery Note No:</label>
+                    <input type="text" id="deliveryNoteNo" placeholder="XXXXXX">
+                </div>
+            </div>
+
+            <h2>Bill To</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="customerName">Customer Name:</label>
+                    <input type="text" id="customerName" placeholder="M/s. Customer Name">
+                </div>
+
+                <div class="form-group">
+                    <label for="customerAddress">Address:</label>
+                    <textarea id="customerAddress" rows="3" placeholder="House No, Street, City, State"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="customerContact">Contact No:</label>
+                    <input type="text" id="customerContact" placeholder="+91 XXXXX XXXXX">
+                </div>
+
+                <div class="form-group">
+                    <label for="customerGST">GST No:</label>
+                    <input type="text" id="customerGST" placeholder="XXXXXXXXXXXXX">
+                </div>
+            </div>
+
+            <h2>Product Details</h2>
+            <div id="productsList">
+                <div class="product-item">
+                    <div class="product-grid">
+                        <div class="form-group">
+                            <label>Product/Item:</label>
+                            <input type="text" class="product-name" placeholder="Product name">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Price:</label>
+                            <input type="number" class="product-price" placeholder="0.00" step="0.01">
+                        </div>
+
+                        <div class="form-group">
+                            <label>UOM:</label>
+                            <input type="text" class="product-uom" placeholder="Nos.">
+                        </div>
+
+                        <div class="form-group">
+                            <label>QTY:</label>
+                            <input type="number" class="product-qty" placeholder="1" min="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Rate:</label>
+                            <input type="number" class="product-rate" placeholder="0.00" step="0.01">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Amount:</label>
+                            <input type="number" class="product-amount" readonly>
+                        </div>
+
+                        <button type="button" class="remove-product" style="display:none;">Remove</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="addProduct" class="btn-add">+ Add Product</button>
+
+            <h2>Tax Details</h2>
+            <div class="tax-section">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="cgst" value="9">
+                    CGST 9%
+                </label>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="sgst" value="9">
+                    SGST 9%
+                </label>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="cess" value="1">
+                    CESS 1%
+                </label>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="igst" value="18">
+                    IGST 18%
+                </label>
+            </div>
+
+            <h2>Stamping Details</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="stampedOn">Stamped On:</label>
+                    <input type="text" id="stampedOn" placeholder="C'25">
+                </div>
+
+                <div class="form-group">
+                    <label for="nextStamping">Next Stamping:</label>
+                    <input type="text" id="nextStamping" placeholder="C'26">
+                </div>
+            </div>
+
+            <div class="totals-section">
+                <div class="total-item">
+                    <span>Sub Total:</span>
+                    <span id="subTotal">₹ 0.00</span>
+                </div>
+                <div class="total-item" id="cgstAmount">
+                    <span>CGST 9%:</span>
+                    <span>₹ 0.00</span>
+                </div>
+                <div class="total-item" id="sgstAmount">
+                    <span>SGST 9%:</span>
+                    <span>₹ 0.00</span>
+                </div>
+                <div class="total-item" id="cessAmount">
+                    <span>CESS 1%:</span>
+                    <span>₹ 0.00</span>
+                </div>
+                <div class="total-item" id="igstAmount">
+                    <span>IGST 18%:</span>
+                    <span>₹ 0.00</span>
+                </div>
+                <div class="total-item total-final">
+                    <span>Total Amount:</span>
+                    <span id="totalAmount">₹ 0.00</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" id="previewBtn" class="btn-primary">Preview Invoice</button>
+                <button type="button" id="downloadBtn" class="btn-success" style="display:none;">Download PDF</button>
+            </div>
+        </div>
+
+        <div id="invoicePreview" class="invoice-preview" style="display:none;">
+            <div class="invoice-container">
+                <div class="invoice-header">
+                    <h2>TAX INVOICE</h2>
+                    <div class="company-header">
+                        <div class="logo-section">
+                            <img src="assets/logo.png" alt="Company Logo" class="logo">
+                            <div class="company-info">
+                                <h3>DEEPA WEIGHING SERVICES</h3>
+                                <p>L.F Plaza, Pottakuzhi jn. Elamakkara P.O<br>
+                                Kaloor, Kochi 682 026, India</p>
+                                <p><strong>Phone : +91 9895175050, 8593875050</strong><br>
+                                Email : deepaweighing@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="license-info">
+                            <p>LIC NO. D-2665 / R-981</p>
+                            <div class="license-box"></div>
+                            <br>
+                            <br>
+                            <br>
+                            <h3>INVOICE NO. <span id="previewInvoiceNo" style="font-weight: bold; color: #333;"></span></h3>
+                            <p>Date: <span id="previewDate"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invoice-body">
+                    <div class="customer-details">
+                        <div class="bill-to">
+                            <h4>Bill To</h4>
+                            <p id="previewCustomerName"></p>
+                            <div id="previewCustomerAddress"></div>
+                            <br>
+                            <p>Contact No.: <span id="previewCustomerContact" style="font-weight: bold; color: #333;"></span></p>
+                            <br><br><br>
+                            <p>GST: <span id="previewCustomerGST" style="font-weight: bold; color: #333;"></span></p>
+                        </div>
+                        <div class="order-details">
+                            <p>Purchase Order no.<br><span id="previewPONo"></span></p><br>
+                            <p>Purchase order date<br><span id="previewPODate"></span></p><br>
+                            <p>Vehicle no.<br><span id="previewVehicleNo"></span></p><br>
+                            <p>Delivery Note No.<br><span id="previewDeliveryNote"></span></p>
+                        </div>
+                    </div>
+
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product / Item</th>
+                                <th>Price</th>
+                                <th>UOM</th>
+                                <th>QTY</th>
+                                <th>RATE</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewProductsBody">
+                        </tbody>
+                        <tfoot>
+                            <tr id="previewSubTotal">
+                                <td colspan="6">Sub Total</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="total-section">
+                        <div class="total-bottom-row">
+                            <p class="amount-in-words" id="amountInWords"></p>
+                            <h3>Total Amount: <span id="previewTotalAmount"></span></h3>
+                        </div>
+                    </div>
+                    <p class="company-attribution">For Deepa Weighing Services</p>
+                    <br>
+
+                    <div class="stamping-section">
+                        <div>
+                            <strong>Stamped On - <span id="previewStampedOn"></span></strong>
+                        </div>
+                        <div class="stamping-divider"></div>
+                        <div>
+                            <strong>Next Stamping - <span id="previewNextStamping"></span></strong>
+                        </div>
+                    </div>
+
+                    <div class="footer-section">
+                        <div class="bank-details">
+                            <h4>Bank Details:</h4>
+                            <p>Kerala Gramin Bank, Kaloor Branch<br>
+                            Account No.: 40537110000321<br>
+                            IFSC Code: KLGB0040537</p>
+                        </div>
+                        <div class="signature">
+                            
+                            <p><strong>Authorised Signatory</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
