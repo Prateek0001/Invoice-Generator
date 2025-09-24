@@ -376,7 +376,19 @@ async function downloadPDF() {
         logging: false
     });
 
-    const imgData = canvas.toDataURL('image/png');
+    // Try to get image data, fallback to blob if tainted
+    let imgData;
+    try {
+        imgData = canvas.toDataURL('image/png');
+    } catch (error) {
+        // If canvas is tainted, use blob instead
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        imgData = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(blob);
+        });
+    }
     const pdf = new jspdf.jsPDF({
         orientation: 'portrait',
         unit: 'mm',
